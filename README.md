@@ -3,6 +3,10 @@ A two simple scripts to automate video journaling of 1 second everyday without u
 
 ---
 
+### Dependencies:
+- `ffmpeg`
+
+
 ## Usage:
 There are two folders:
 1. `res` -- for raw videofiles
