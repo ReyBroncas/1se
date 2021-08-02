@@ -1,4 +1,5 @@
 #/bin/sh
+#=====[ARGS:] [path to raw videofiles dir] , [path to destination dir]
 
 # immediately stop running on interupt
 function stop {
@@ -12,10 +13,10 @@ function prepare_videos {
     mkdir -p $2
 
     for f in $(find "$1/" -name "*.mp4" -type f -printf "%f\n"); do
-        tmp_1_name=$(printf "%s/tmp_1-%s\n" $2 $f)
-        tmp_2_name=$(printf "%s/tmp_2-%s\n" $2 $f)
-        fixed_name=$(printf "%s/fixed-%s\n" $2 $f)
-        f_date=$(date -r "$1/$f" | awk '{printf "%s-%s-%s",$2,$3,$NF}')
+        local tmp_1_name=$(printf "%s/tmp_1-%s\n" $2 $f)
+        local tmp_2_name=$(printf "%s/tmp_2-%s\n" $2 $f)
+        local fixed_name=$(printf "%s/fixed-%s\n" $2 $f)
+        local f_date=$(date -r "$1/$f" | awk '{printf "%s-%s-%s",$2,$3,$NF}')
 
         printf "[PREPARING]: %s/%s -> %s\n" $1 $f $fixed_name
 
@@ -38,7 +39,7 @@ function prepare_videos {
 
 function modify_timestamps {
     for f in $(find "$1/" -name "*.mp4" -type f -printf "%f\n"); do
-        timestamp=$(printf "%s0000.00" $(echo $f | cut -d '_' -f1))
+        local timestamp=$(printf "%s0000.00" $(echo $f | cut -d '_' -f1))
         touch -a -m -t $timestamp "$1/$f"
     done
 }
@@ -47,4 +48,4 @@ function modify_timestamps {
 
 trap stop INT
 
-prepare_videos res archive font/Nunito-Regular.ttf
+prepare_videos $1 $2 font/Nunito-Regular.ttf
